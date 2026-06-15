@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥎 Pitcher's Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a1929;
+    --teal: #0d5c63;
+    --aqua: #1ba098;
+    --flame: #ff5e3a;
+    --amber: #ffb627;
+    --rose: #ff476f;
+    --sky: #2eb9e6;
+    --bg: #eef3f5;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--ink); color: var(--ink); min-height: 100vh; }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(160deg, #0a1929 0%, #0d3b40 45%, #0a1929 100%);
+    padding: 42px 20px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 25% 55%, rgba(27,160,152,0.28) 0%, transparent 55%),
+      radial-gradient(ellipse at 78% 22%, rgba(255,94,58,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 85%, rgba(46,185,230,0.13) 0%, transparent 48%);
+  }
+  .hero-badge {
+    display:inline-block;
+    background: linear-gradient(135deg, var(--flame), var(--amber));
+    color:white; font-size:11.5px; font-weight:900; letter-spacing:2.5px;
+    text-transform:uppercase; padding:7px 20px; border-radius:30px;
+    margin-bottom:18px; position:relative;
+  }
+  .hero h1 {
+    font-family:'Anton',sans-serif; font-size:clamp(48px,12.5vw,88px);
+    color:white; line-height:0.92; letter-spacing:2px; position:relative;
+    text-transform:uppercase;
+  }
+  .hero h1 .a1 { color:var(--aqua); }
+  .hero h1 .a2 { color:var(--amber); }
+  .hero-sub { color:rgba(255,255,255,0.65); font-size:15px; font-weight:700; margin-top:14px; letter-spacing:0.5px; position:relative; }
+  .hero-pills { display:flex; justify-content:center; gap:9px; margin-top:26px; flex-wrap:wrap; position:relative; }
+  .hero-pill {
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.18);
+    border-radius:50px; padding:9px 18px; color:white; font-size:12.5px; font-weight:800;
+  }
+  .hero-pill .hl { color:var(--aqua); }
+  .hero-author {
+    position:relative; margin-top:22px;
+    color:rgba(255,255,255,0.45); font-size:12px; font-weight:700; letter-spacing:1px;
+  }
+  .hero-author strong { color:rgba(255,255,255,0.7); font-weight:800; }
+
+  /* ===== TABS ===== */
+  .tab-nav {
+    background:#071320; padding:0 12px; display:flex; gap:2px;
+    overflow-x:auto; border-bottom:2px solid rgba(27,160,152,0.25);
+    position:sticky; top:0; z-index:100; scrollbar-width:none;
+  }
+  .tab-nav::-webkit-scrollbar { display:none; }
+  .tab-btn {
+    flex-shrink:0; padding:14px 15px; background:none; border:none;
+    color:rgba(255,255,255,0.4); font-family:'Nunito',sans-serif;
+    font-size:12.5px; font-weight:900; cursor:pointer;
+    border-bottom:3px solid transparent; transition:all 0.2s; white-space:nowrap; letter-spacing:0.3px;
+  }
+  .tab-btn:hover { color:rgba(255,255,255,0.75); }
+  .tab-btn.active { color:var(--aqua); border-bottom-color:var(--aqua); }
+
+  /* ===== CONTENT ===== */
+  .content { background:var(--bg); min-height:100vh; }
+  .section { display:none; padding:28px 16px 40px; max-width:920px; margin:0 auto; }
+  .section.active { display:block; }
+
+  /* ===== SECTION HEAD ===== */
+  .sec-head { margin-bottom:26px; padding-bottom:16px; border-bottom:3px solid var(--ink); }
+  .sec-tag {
+    display:inline-block; font-size:10.5px; font-weight:900; letter-spacing:2px;
+    text-transform:uppercase; padding:4px 12px; border-radius:4px; margin-bottom:9px;
+  }
+  .t-teal { background:var(--teal); color:white; }
+  .t-aqua { background:var(--aqua); color:white; }
+  .t-flame { background:var(--flame); color:white; }
+  .t-amber { background:var(--amber); color:var(--ink); }
+  .t-rose { background:var(--rose); color:white; }
+  .t-sky { background:var(--sky); color:white; }
+  .t-ink { background:var(--ink); color:white; }
+  .sec-head h2 { font-family:'Anton',sans-serif; font-size:clamp(30px,6vw,48px); color:var(--ink); letter-spacing:1px; text-transform:uppercase; }
+  .sec-head p { color:#445; font-size:15px; font-weight:600; margin-top:7px; line-height:1.55; }
+
+  /* ===== CARD ===== */
+  .card {
+    background:white; border-radius:20px; overflow:hidden; margin-bottom:24px;
+    box-shadow:0 4px 22px rgba(13,92,99,0.10); transition:transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(13,92,99,0.16); }
+  .card-top { padding:20px 22px 14px; display:flex; align-items:flex-start; gap:14px; }
+  .c-icon { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:25px; flex-shrink:0; }
+  .ic-teal { background:#d9f0f1; } .ic-aqua { background:#d5f3f0; } .ic-flame { background:#ffe6e0; }
+  .ic-amber { background:#fff2d6; } .ic-rose { background:#ffe0e8; } .ic-sky { background:#dcf1fb; } .ic-ink { background:#dde5ec; }
+  .c-title h3 { font-family:'Anton',sans-serif; font-size:22px; color:var(--ink); letter-spacing:0.5px; line-height:1.1; text-transform:uppercase; }
+  .c-badge { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.5px; padding:3px 10px; border-radius:20px; margin-top:5px; }
+  .b-solo { background:#d5f3f0; color:#0a5c54; }
+  .b-partner { background:#ffe6e0; color:#c43a1a; }
+  .b-key { background:#fff2d6; color:#8a5a00; }
+  .b-future { background:#dde5ec; color:#3a5572; }
+
+  .card-img { margin:0 22px 18px; border-radius:14px; overflow:hidden; height:200px; background:#dde5ec; display:flex; align-items:center; justify-content:center; }
+  .card-img img { width:100%; height:100%; object-fit:cover; }
+  .img-ph { text-align:center; color:#8aa; }
+  .img-ph .ie { font-size:46px; display:block; margin-bottom:8px; }
+  .card-body { padding:0 22px 24px; }
+
+  /* WHY */
+  .why { background:linear-gradient(135deg,var(--ink),#0d3b40); border-radius:12px; padding:14px 18px; margin-bottom:18px; display:flex; gap:12px; align-items:flex-start; }
+  .why-lbl { font-size:9.5px; font-weight:900; letter-spacing:2px; color:var(--amber); text-transform:uppercase; flex-shrink:0; margin-top:2px; }
+  .why p { color:rgba(255,255,255,0.85); font-size:13px; font-weight:600; line-height:1.55; }
+
+  /* SETS */
+  .sets { display:inline-flex; align-items:center; gap:6px; background:var(--ink); color:white; border-radius:8px; padding:6px 14px; font-size:12px; font-weight:900; margin-bottom:16px; }
+  .sets span { color:var(--amber); }
+
+  /* STEPS */
+  .steps-lbl { font-size:10.5px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:#889; margin-bottom:12px; }
+  .step-list { list-style:none; }
+  .step-item { display:flex; gap:14px; margin-bottom:13px; align-items:flex-start; }
+  .s-num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:white; flex-shrink:0; }
+  .n-teal { background:var(--teal); } .n-aqua { background:var(--aqua); } .n-flame { background:var(--flame); }
+  .n-amber { background:var(--amber); color:var(--ink); } .n-rose { background:var(--rose); } .n-sky { background:var(--sky); } .n-ink { background:var(--ink); }
+  .s-txt { font-size:14px; font-weight:700; color:#333; line-height:1.55; padding-top:4px; }
+  .s-txt strong { color:var(--ink); }
+
+  /* TIPS */
+  .tips { display:flex; gap:9px; margin-top:18px; flex-wrap:wrap; }
+  .tip { background:var(--bg); border:1.5px solid #cdd9dd; border-radius:9px; padding:8px 13px; font-size:12px; font-weight:800; color:#445; flex:1; min-width:120px; }
+
+  /* TIMELINE (warmup) */
+  .timeline { position:relative; padding-left:32px; }
+  .timeline::before { content:''; position:absolute; left:10px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--aqua),var(--flame),var(--amber)); }
+  .tl-item { position:relative; margin-bottom:20px; background:white; border-radius:16px; padding:17px 18px; box-shadow:0 2px 12px rgba(13,92,99,0.08); }
+  .tl-dot { position:absolute; left:-28px; top:19px; width:14px; height:14px; border-radius:50%; border:2.5px solid white; }
+  .tl-time { font-size:10.5px; font-weight:900; letter-spacing:1px; color:#889; text-transform:uppercase; margin-bottom:4px; }
+  .tl-title { font-family:'Anton',sans-serif; font-size:20px; color:var(--ink); letter-spacing:0.5px; text-transform:uppercase; }
+  .tl-desc { font-size:13px; font-weight:600; color:#556; margin-top:7px; line-height:1.5; }
+  .tl-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .tl-chip { background:var(--bg); border-radius:7px; padding:4px 11px; font-size:12px; font-weight:700; color:#445; }
+
+  /* MECHANICS PHASE FLOW */
+  .flow { background:var(--ink); border-radius:14px; padding:20px; margin-bottom:22px; text-align:center; }
+  .flow .fl-label { font-size:10.5px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:14px; }
+  .flow-nodes { display:flex; align-items:stretch; justify-content:center; gap:7px; flex-wrap:wrap; }
+  .fl-node { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius:10px; padding:10px 12px; color:white; font-size:11.5px; font-weight:800; min-width:80px; }
+  .fl-node .fl-icon { font-size:20px; display:block; margin-bottom:4px; }
+  .fl-node .fl-num { font-size:9px; color:var(--amber); font-weight:900; letter-spacing:1px; }
+  .fl-arrow { color:rgba(255,255,255,0.3); font-size:16px; align-self:center; }
+
+  /* PHASE CARDS */
+  .phase-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px; }
+  @media(max-width:560px){ .phase-grid { grid-template-columns:1fr; } }
+  .phase-card { background:white; border-radius:16px; padding:18px; box-shadow:0 2px 12px rgba(13,92,99,0.07); }
+  .phase-card .ph-num { font-size:10px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:#889; margin-bottom:4px; }
+  .phase-card h4 { font-family:'Anton',sans-serif; font-size:19px; color:var(--ink); letter-spacing:0.5px; margin-bottom:9px; text-transform:uppercase; }
+  .phase-card ul { list-style:none; }
+  .phase-card li { font-size:13px; font-weight:700; color:#444; padding:4px 0 4px 15px; position:relative; line-height:1.4; }
+  .phase-card li::before { content:'▸'; position:absolute; left:0; color:var(--aqua); }
+
+  /* INFO CARDS (strategy/mental) */
+  .info-cards { display:grid; grid-template-columns:1fr; gap:16px; }
+  .info-card { background:white; border-radius:18px; padding:22px; box-shadow:0 3px 16px rgba(13,92,99,0.09); border-left:5px solid var(--aqua); display:flex; gap:16px; }
+  .info-emoji { font-size:34px; flex-shrink:0; margin-top:2px; }
+  .info-card h4 { font-family:'Anton',sans-serif; font-size:20px; letter-spacing:0.5px; color:var(--ink); margin-bottom:7px; text-transform:uppercase; }
+  .info-card p { font-size:13px; font-weight:600; color:#556; line-height:1.55; }
+  .info-list { margin-top:10px; list-style:none; }
+  .info-list li { font-size:13px; font-weight:700; color:#333; padding:4px 0 4px 16px; position:relative; line-height:1.45; }
+  .info-list li::before { content:'→'; position:absolute; left:0; color:var(--aqua); font-weight:900; }
+
+  /* PITCH GRIP CARDS */
+  .grip-callout { background:#fff8ee; border:2px solid var(--amber); border-radius:14px; padding:16px 18px; margin-bottom:18px; }
+  .grip-callout h5 { font-family:'Anton',sans-serif; font-size:16px; color:var(--ink); letter-spacing:0.5px; margin-bottom:6px; text-transform:uppercase; }
+  .grip-callout p { font-size:13px; font-weight:700; color:#555; line-height:1.5; }
+
+  /* WEEK PLANNER */
+  .week-card { background:white; border-radius:18px; overflow:hidden; margin-bottom:20px; box-shadow:0 3px 16px rgba(13,92,99,0.09); }
+  .week-head { padding:18px 22px; color:white; display:flex; align-items:center; justify-content:space-between; }
+  .week-head h3 { font-family:'Anton',sans-serif; font-size:24px; letter-spacing:1px; text-transform:uppercase; }
+  .week-head .week-focus { font-size:12px; font-weight:800; opacity:0.9; text-align:right; }
+  .week-body { padding:20px 22px; }
+  .day-row { display:flex; gap:14px; padding:11px 0; border-bottom:1px solid #eef; align-items:flex-start; }
+  .day-row:last-child { border-bottom:none; }
+  .day-tag { background:var(--ink); color:white; border-radius:8px; padding:5px 10px; font-size:11px; font-weight:900; letter-spacing:0.5px; flex-shrink:0; min-width:62px; text-align:center; }
+  .day-tag.rest { background:#9fb0bd; }
+  .day-content { font-size:13px; font-weight:700; color:#444; line-height:1.5; padding-top:3px; }
+  .day-content strong { color:var(--ink); }
+
+  /* VIDEO REFERENCE */
+  .vid-card { background:white; border-radius:16px; padding:18px 20px; margin-bottom:14px; box-shadow:0 2px 12px rgba(13,92,99,0.07); border-left:5px solid var(--rose); }
+  .vid-card .vid-topic { font-size:10px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; color:#889; margin-bottom:5px; }
+  .vid-card h4 { font-family:'Anton',sans-serif; font-size:18px; color:var(--ink); letter-spacing:0.5px; margin-bottom:8px; text-transform:uppercase; }
+  .vid-card p { font-size:13px; font-weight:600; color:#556; line-height:1.5; margin-bottom:10px; }
+  .vid-search { background:var(--bg); border-radius:9px; padding:10px 14px; display:flex; align-items:center; gap:10px; }
+  .vid-search .vs-icon { font-size:18px; }
+  .vid-search .vs-text { font-size:13px; font-weight:800; color:var(--ink); }
+  .vid-search .vs-text span { color:var(--rose); }
+
+  /* CHECKLIST */
+  .tracker { background:linear-gradient(135deg,var(--ink),#0d3b40); border-radius:20px; padding:24px; margin-bottom:20px; color:white; }
+  .tracker h3 { font-family:'Anton',sans-serif; font-size:23px; letter-spacing:1.5px; color:var(--amber); margin-bottom:16px; text-transform:uppercase; }
+  .cl-item { display:flex; align-items:center; gap:13px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.08); cursor:pointer; }
+  .cl-item:last-child { border-bottom:none; }
+  .cl-box { width:23px; height:23px; border:2px solid rgba(255,255,255,0.25); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:13px; transition:all 0.2s; flex-shrink:0; }
+  .cl-box.done { background:var(--aqua); border-color:var(--aqua); }
+  .cl-lbl { font-size:13.5px; font-weight:700; }
+  .cl-lbl.done { text-decoration:line-through; opacity:0.45; }
+
+  /* MOTIVE */
+  .motive { background:linear-gradient(135deg,var(--aqua) 0%,var(--teal) 100%); border-radius:20px; padding:28px 22px; text-align:center; color:white; margin-top:6px; }
+  .motive .big { font-family:'Anton',sans-serif; font-size:32px; letter-spacing:1.5px; text-transform:uppercase; }
+  .motive p { font-size:14px; font-weight:700; opacity:0.92; margin-top:10px; line-height:1.55; }
+  .motive.flame { background:linear-gradient(135deg,var(--flame) 0%,var(--amber) 100%); }
+  .motive.ink { background:linear-gradient(135deg,var(--ink),#0d3b40); }
+
+  /* SAFETY BOX */
+  .safety { background:#fff4f1; border:2px solid var(--flame); border-radius:16px; padding:20px 22px; margin-bottom:22px; }
+  .safety h4 { font-family:'Anton',sans-serif; font-size:19px; color:var(--flame); letter-spacing:0.5px; margin-bottom:10px; text-transform:uppercase; }
+  .safety ul { list-style:none; }
+  .safety li { font-size:13.5px; font-weight:700; color:#444; padding:5px 0 5px 22px; position:relative; line-height:1.45; }
+  .safety li::before { content:'⚠️'; position:absolute; left:0; font-size:12px; }
+
+  /* INTRO BLOCK */
+  .intro-block { background:white; border-radius:18px; padding:24px; margin-bottom:20px; box-shadow:0 3px 16px rgba(13,92,99,0.08); }
+  .intro-block h3 { font-family:'Anton',sans-serif; font-size:24px; color:var(--ink); letter-spacing:0.5px; margin-bottom:12px; text-transform:uppercase; }
+  .intro-block p { font-size:14px; font-weight:600; color:#445; line-height:1.65; margin-bottom:12px; }
+  .intro-block p:last-child { margin-bottom:0; }
+  .intro-block strong { color:var(--ink); font-weight:800; }
+
+  /* FOOTER */
+  .app-footer { background:#071320; padding:30px 20px 36px; text-align:center; }
+  .app-footer .ft-logo { font-family:'Anton',sans-serif; font-size:20px; color:rgba(255,255,255,0.85); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+  .app-footer .ft-credit { color:rgba(255,255,255,0.5); font-size:13px; font-weight:700; letter-spacing:0.5px; }
+  .app-footer .ft-credit strong { color:var(--aqua); font-weight:800; }
+  .app-footer .ft-tag { color:rgba(255,255,255,0.3); font-size:11px; font-weight:600; margin-top:10px; letter-spacing:1px; }
+
+  @media(max-width:480px){
+    .hero { padding:28px 14px 40px; }
+    .card-img { height:160px; }
+    .phase-grid { grid-template-columns:1fr; }
+    .flow-nodes { gap:5px; }
+    .fl-node { min-width:70px; padding:8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🥎 Pitcher's Playbook</div>
+  <h1>LEARN TO<br><span class="a1">PITCH</span><br><span class="a2">THE RIGHT WAY</span></h1>
+  <p class="hero-sub">A complete beginner-to-confident guide · Ages 12+ · Windmill fastpitch</p>
+  <div class="hero-pills">
+    <div class="hero-pill">🔥 <span class="hl">Arm Care</span> + Warm-Up</div>
+    <div class="hero-pill">⚙️ <span class="hl">Full Mechanics</span></div>
+    <div class="hero-pill">🎯 <span class="hl">Fastball</span> + Change-Up</div>
+    <div class="hero-pill">📅 <span class="hl">Week-by-Week</span> Plan</div>
+  </div>
+  <div class="hero-author">A training guide by <strong>Coach Jason Oberender</strong></div>
+</div>
+
+<!-- TABS -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('start',this)">🚀 Start Here</button>
+  <button class="tab-btn" onclick="showTab('armcare',this)">🔥 Arm Care</button>
+  <button class="tab-btn" onclick="showTab('mechanics',this)">⚙️ Mechanics</button>
+  <button class="tab-btn" onclick="showTab('fastball',this)">🎯 Fastball</button>
+  <button class="tab-btn" onclick="showTab('changeup',this)">🪂 Change-Up</button>
+  <button class="tab-btn" onclick="showTab('movement',this)">🌀 Movement</button>
+  <button class="tab-btn" onclick="showTab('drills',this)">💪 Drills</button>
+  <button class="tab-btn" onclick="showTab('strategy',this)">🧠 Strategy</button>
+  <button class="tab-btn" onclick="showTab('planner',this)">📅 Planner</button>
+  <button class="tab-btn" onclick="showTab('video',this)">🎥 Video Guide</button>
+  <button class="tab-btn" onclick="showTab('checklist',this)">✅ Checklist</button>
+</div>
+
+<div class="content">
+
+  <!-- ===== START HERE ===== -->
+  <div id="start" class="section active">
+    <div class="sec-head">
+      <span class="sec-tag t-teal">Read This First</span>
+      <h2>WELCOME, PITCHER 🚀</h2>
+      <p>You're about to learn one of the hardest and most important positions in softball. Take it slow, trust the process, and you'll build a foundation that lasts your whole career.</p>
+    </div>
+
+    <div class="intro-block">
+      <h3>What Makes Pitching Different</h3>
+      <p>Pitching in fastpitch softball uses an <strong>underhand windmill motion</strong> — your arm makes a full circle and you release the ball down by your hip. It looks simple when someone's good at it. It is not simple. It's a full-body athletic movement that takes time to build.</p>
+      <p>Here's the good news: <strong>you already have a huge head start.</strong> You've played this game at a high level. You understand the field, you have body control, and you've got a strong arm from catching and playing the corners. That athleticism is exactly what great pitchers are built from. Now we're going to teach your body a new skill on top of it.</p>
+      <p>This guide takes you from <strong>day one</strong> all the way to throwing a fastball you can locate and a change-up you can trust. Go in order. Don't skip the boring stuff. The pitchers who rush the fundamentals are the ones who develop bad habits that take years to fix.</p>
+    </div>
+
+    <div class="safety">
+      <h4>🛡️ Arm Safety — Non-Negotiable</h4>
+      <ul>
+        <li>Never pitch through sharp or joint pain. Sore muscles are normal, joint pain is not.</li>
+        <li>Always warm up your arm BEFORE pitching. Never cold-throw at full speed.</li>
+        <li>Build volume slowly. More pitches too soon is the #1 cause of young arm injuries.</li>
+        <li>Take rest days seriously. Your arm gets stronger when it recovers, not when it's overworked.</li>
+        <li>Ice your shoulder or forearm if it's sore after a heavy session.</li>
+      </ul>
+    </div>
+
+    <div class="intro-block">
+      <h3>How To Use This Guide</h3>
+      <p><strong>If you're brand new:</strong> Start with Arm Care, then Mechanics. Spend your first two to three weeks ONLY on the windmill motion and wrist snaps before you worry about speed or spots. The Planner tab lays this out for you week by week.</p>
+      <p><strong>A big focus of this guide is what you can do on your own.</strong> A lot of pitching practice does need a catcher or a net, but plenty doesn't. Every drill in this guide is labeled — look for the <span style="background:#d5f3f0; color:#0a5c54; font-weight:800; padding:1px 7px; border-radius:5px; font-size:12px;">🙋 Solo</span> tag for the things you can do completely alone, even in your room or driveway.</p>
+    </div>
+
+    <div class="motive flame">
+      <div class="big">EVERY GREAT PITCHER STARTED AT ZERO 🔥</div>
+      <p>The girl throwing 60 mph in high school was once exactly where you are right now — learning the circle, snapping her wrist, figuring it out one rep at a time. The difference between her and everyone else was that she kept showing up. That's the whole secret. Let's get to work.</p>
+    </div>
+  </div>
+
+  <!-- ===== ARM CARE ===== -->
+  <div id="armcare" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-flame">Step 1 · Every Session</span>
+      <h2>ARM CARE & WARM-UP 🔥</h2>
+      <p>Your arm is your engine. Pitchers who take care of their arms have long careers. Pitchers who skip this get hurt. This routine comes BEFORE every single throwing session, no exceptions.</p>
+    </div>
+
+    <div class="card-img" style="margin:0 0 22px; height:210px;">
+      <img src="https://i.ytimg.com/vi/band-workout-pitchers/maxresdefault.jpg" alt="Pitcher resistance band arm care"
+        onerror="this.parentElement.innerHTML='<div class=\'img-ph\'><span class=\'ie\'>🔥</span>Resistance band arm care routine</div>'"/>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--aqua)"></div>
+        <div class="tl-time">⏱ Minutes 1–3</div>
+        <div class="tl-title">GET THE BODY MOVING</div>
+        <div class="tl-desc">Pitching is full-body. Wake up everything before you touch your arm.</div>
+        <div class="tl-chips">
+          <span class="tl-chip">🏃 Light jog or jumping jacks 1 min</span>
+          <span class="tl-chip">🦵 Leg swings × 10 each</span>
+          <span class="tl-chip">🔄 Hip circles × 8 each</span>
+          <span class="tl-chip">🐛 Walking lunges × 10</span>
+          <span class="tl-chip">🌟 Bodyweight squats × 15</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--flame)"></div>
+        <div class="tl-time">⏱ Minutes 3–7</div>
+        <div class="tl-title">SHOULDER & ARM ACTIVATION</div>
+        <div class="tl-desc">This is the most important part. Resistance bands (J-Bands or any therapy band) wake up the small muscles that protect your shoulder.</div>
+        <div class="tl-chips">
+          <span class="tl-chip">💪 Band external rotations × 15</span>
+          <span class="tl-chip">💪 Band internal rotations × 15</span>
+          <span class="tl-chip">👐 Band pull-aparts × 15</span>
+          <span class="tl-chip">🔄 Arm circles — small to big, both ways</span>
+          <span class="tl-chip">✋ Wrist flexor + extensor stretch</span>
+          <span class="tl-chip">🙆 Cross-body shoulder stretch</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--amber)"></div>
+        <div class="tl-time">⏱ Minutes 7–12</div>
+        <div class="tl-title">EASY THROWING BUILD-UP</div>
+        <div class="tl-desc">Before pitching, do regular overhand catch to warm the arm. Start close, work back. NEVER start with windmill pitches cold.</div>
+        <div class="tl-chips">
+          <span class="tl-chip">📍 Overhand catch 15 ft × 10</span>
+          <span class="tl-chip">📍 Back up to 30 ft × 10</span>
+          <span class="tl-chip">📍 Back up to 45 ft × 8</span>
+          <span class="tl-chip">🥎 10 easy wrist-snap flips</span>
+          <span class="tl-chip">🥎 10 half-speed windmills before full</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-flame">🧊</div>
+        <div class="c-title">
+          <h3>AFTER YOU PITCH — RECOVERY</h3>
+          <span class="c-badge b-key">⭐ Don't Skip</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>What you do after pitching matters as much as the warm-up. Good recovery habits now build an arm that stays healthy for years.</p>
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-flame">1</div><div class="s-txt"><strong>Light band work again</strong> — same external rotations, slow and easy. This flushes the arm out.</div></li>
+          <li class="step-item"><div class="s-num n-flame">2</div><div class="s-txt"><strong>Gentle stretching</strong> — shoulder, forearm, wrist. Hold each 20–30 seconds.</div></li>
+          <li class="step-item"><div class="s-num n-flame">3</div><div class="s-txt"><strong>Ice if sore</strong> — 15 minutes on the shoulder or forearm if you had a heavy session or feel achy.</div></li>
+          <li class="step-item"><div class="s-num n-flame">4</div><div class="s-txt"><strong>Hydrate and rest.</strong> Muscles rebuild with water and sleep. This is when you actually get stronger.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="motive ink">
+      <div class="big">HEALTHY ARM = LONG CAREER 💪</div>
+      <p>The best ability is availability. A pitcher who can't throw because her arm hurts can't help her team. Treat your arm like the valuable tool it is, every single day.</p>
+    </div>
+  </div>
+
+  <!-- ===== MECHANICS ===== -->
+  <div id="mechanics" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-aqua">The Foundation · Master This First</span>
+      <h2>WINDMILL MECHANICS ⚙️</h2>
+      <p>The windmill pitch breaks down into 6 phases. Learn each one slowly and in order. Speed comes LATER — clean mechanics come first. Rushing this is the #1 mistake new pitchers make.</p>
+    </div>
+
+    <div class="card-img" style="margin:0 0 20px; height:210px;">
+      <img src="https://www.thephysicaleducator.com/windmill-pitch-phases.jpg" alt="Windmill pitching phases breakdown"
+        onerror="this.parentElement.innerHTML='<div class=\'img-ph\'><span class=\'ie\'>⚙️</span>The 6 phases of the windmill pitch</div>'"/>
+    </div>
+
+    <div class="flow">
+      <div class="fl-label">THE 6 PHASES OF THE WINDMILL PITCH</div>
+      <div class="flow-nodes">
+        <div class="fl-node"><span class="fl-icon">🧍</span><span class="fl-num">1</span><br>Stance</div>
+        <div class="fl-arrow">→</div>
+        <div class="fl-node"><span class="fl-icon">🤝</span><span class="fl-num">2</span><br>Present</div>
+        <div class="fl-arrow">→</div>
+        <div class="fl-node"><span class="fl-icon">👟</span><span class="fl-num">3</span><br>Stride</div>
+        <div class="fl-arrow">→</div>
+        <div class="fl-node"><span class="fl-icon">🌀</span><span class="fl-num">4</span><br>Circle</div>
+        <div class="fl-arrow">→</div>
+        <div class="fl-node"><span class="fl-icon">💥</span><span class="fl-num">5</span><br>Release</div>
+        <div class="fl-arrow">→</div>
+        <div class="fl-node"><span class="fl-icon">🎯</span><span class="fl-num">6</span><br>Finish</div>
+      </div>
+    </div>
+
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="ph-num">Phase 1</div>
+        <h4>🧍 STANCE & SET</h4>
+        <ul>
+          <li>Both feet on the pitching rubber, shoulder-width</li>
+          <li>Throwing-side foot forward, toes on top of rubber</li>
+          <li>Back foot toe touching the back edge</li>
+          <li>Shoulders square to the plate (catcher)</li>
+          <li>Weight balanced, relaxed, athletic</li>
+          <li>Ball in glove, both hands at your belt</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="ph-num">Phase 2</div>
+        <h4>🤝 PRESENTATION</h4>
+        <ul>
+          <li>Present the ball — hands together out front briefly</li>
+          <li>This is required by the rules (a pause)</li>
+          <li>Take a breath, find your target</li>
+          <li>Small weight rock to gather momentum</li>
+          <li>Stay relaxed — tension kills speed</li>
+          <li>Eyes locked on your spot</li>
+        </ul>
+      </div>
+      <div class="phase-card" style="border:2px solid var(--aqua);">
+        <div class="ph-num" style="color:var(--teal); font-weight:900;">⭐ Phase 3 — POWER SOURCE</div>
+        <h4>👟 STRIDE & DRIVE</h4>
+        <ul>
+          <li>Explode forward off the rubber with your back leg</li>
+          <li>Drive your stride foot OUT toward the plate</li>
+          <li>Longer stride = more power (aim to stretch it)</li>
+          <li>Stride foot lands slightly open (10–20°)</li>
+          <li>This leg drive is where REAL speed comes from</li>
+          <li>Hands separate as you start the circle</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="ph-num">Phase 4</div>
+        <h4>🌀 ARM CIRCLE</h4>
+        <ul>
+          <li>Arm makes a full, fast circle up and over</li>
+          <li>Keep arm close to your head/ear at the top</li>
+          <li>Stay LOOSE — "loose arm = fast arm"</li>
+          <li>Don't muscle it — let it whip naturally</li>
+          <li>Arm stays straight but relaxed, not stiff</li>
+          <li>Glove side pulls in to your hip (drives rotation)</li>
+        </ul>
+      </div>
+      <div class="phase-card" style="border:2px solid var(--flame);">
+        <div class="ph-num" style="color:var(--flame); font-weight:900;">⭐ Phase 5 — THE MONEY</div>
+        <h4>💥 RELEASE & SNAP</h4>
+        <ul>
+          <li>Ball releases right at your hip, out in front</li>
+          <li>Forearm "brushes" past your hip on the way through</li>
+          <li>SNAP your wrist hard at release — this is huge</li>
+          <li>Wrist snap creates both speed AND spin</li>
+          <li>Think "snap the door shut" with your wrist</li>
+          <li>Release point in front = strikes, behind = high</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="ph-num">Phase 6</div>
+        <h4>🎯 FOLLOW-THROUGH</h4>
+        <ul>
+          <li>Arm continues up naturally after release</li>
+          <li>Weight fully transfers onto stride leg</li>
+          <li>Back foot drags off the rubber and comes through</li>
+          <li>Square up and get into fielding position FAST</li>
+          <li>You're a fielder the moment you release</li>
+          <li>Balanced finish, ready for a comebacker</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="motive">
+      <div class="big">SLOW IS SMOOTH. SMOOTH IS FAST. 🎯</div>
+      <p>Build each phase at half speed until it feels natural, THEN add speed. A pitcher with clean mechanics at 40 mph will throw 55 mph in a year. A pitcher with sloppy mechanics at 45 mph will be stuck forever. Build it right.</p>
+    </div>
+  </div>
+
+  <!-- ===== FASTBALL ===== -->
+  <div id="fastball" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-amber">Pitch #1 · Your Foundation</span>
+      <h2>THE FASTBALL 🎯</h2>
+      <p>Every pitcher's foundation. Before any movement pitch, you master the fastball — the grip, locating it where you want, and building velocity. This is 80% of your job as a young pitcher.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-amber">🤚</div>
+        <div class="c-title">
+          <h3>THE 4-SEAM GRIP</h3>
+          <span class="c-badge b-key">⭐ Start Here</span>
+        </div>
+      </div>
+      <div class="card-img">
+        <img src="https://rppbaseball.com/4-seam-fastball-grip.jpg" alt="Four seam fastball grip"
+          onerror="this.parentElement.innerHTML='<div class=\'img-ph\'><span class=\'ie\'>🤚</span>The 4-seam grip across the horseshoe</div>'"/>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>The 4-seam grip gives you the most backspin and the truest, fastest, straightest ball. It's the most accurate grip, which is exactly what a young pitcher needs while building consistency.</p>
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-amber">1</div><div class="s-txt">Find the <strong>"horseshoe" or "C" shape</strong> in the seams. Lay your fingertips across the seams where they're widest.</div></li>
+          <li class="step-item"><div class="s-num n-amber">2</div><div class="s-txt">Place your <strong>first two or three fingers across the seam</strong>, fingertips ON the threads. Your fingertips grip and snap the seam.</div></li>
+          <li class="step-item"><div class="s-num n-amber">3</div><div class="s-txt"><strong>Thumb underneath</strong> for support, resting on a seam or smooth leather. Comfortable, not squeezing.</div></li>
+          <li class="step-item"><div class="s-num n-amber">4</div><div class="s-txt"><strong>Grip with your fingers, not your palm.</strong> There should be a small gap between the ball and your palm. This lets you snap.</div></li>
+          <li class="step-item"><div class="s-num n-amber">5</div><div class="s-txt">Hold it <strong>firm but relaxed.</strong> A death grip slows your wrist snap. Think "firm handshake," not "crushing a can."</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-flame">⚡</div>
+        <div class="c-title">
+          <h3>HOW TO THROW HARDER</h3>
+          <span class="c-badge b-key">⭐ Velocity Builders</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>Speed is NOT about throwing your arm harder. It comes from your whole body working together. Here's where real velocity actually comes from, in order of importance.</p>
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-flame">1</div><div class="s-txt"><strong>Leg drive.</strong> Your legs are your engine. Explode off the rubber. The harder you drive forward, the more power transfers to the ball.</div></li>
+          <li class="step-item"><div class="s-num n-flame">2</div><div class="s-txt"><strong>Longer stride.</strong> A longer stride lets your body build more momentum toward the plate. Stretch it out a little more over time.</div></li>
+          <li class="step-item"><div class="s-num n-flame">3</div><div class="s-txt"><strong>Loose, fast arm.</strong> A relaxed arm circles faster than a tense one. Speed lives in looseness, not muscle.</div></li>
+          <li class="step-item"><div class="s-num n-flame">4</div><div class="s-txt"><strong>Hard wrist snap.</strong> The snap at release is free speed. Train it daily (see the wrist snap drill in the Drills tab).</div></li>
+          <li class="step-item"><div class="s-num n-flame">5</div><div class="s-txt"><strong>Core and overall strength.</strong> Your core ties your legs and arm together. Strong athletes throw harder. Med ball work and planks help.</div></li>
+          <li class="step-item"><div class="s-num n-flame">6</div><div class="s-txt"><strong>Glove-side pull.</strong> Snapping your glove arm into your body speeds up your rotation — like a figure skater pulling in their arms to spin faster.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">🚫 Don't sacrifice mechanics chasing speed</div>
+          <div class="tip">📈 Speed comes in months, not days</div>
+          <div class="tip">💪 Get stronger, get faster</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-aqua">🎯</div>
+        <div class="c-title">
+          <h3>HITTING YOUR SPOTS — ACCURACY</h3>
+          <span class="c-badge b-partner">🥅 Net or Catcher</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>A pitcher who throws strikes and hits spots is worth more than a pitcher who throws hard and walks people. Location wins games at every level. This is a skill you build with focused reps.</p>
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-aqua">1</div><div class="s-txt"><strong>Consistent mechanics first.</strong> You can't repeat a location if you can't repeat your motion. Accuracy is built on a repeatable delivery.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">2</div><div class="s-txt"><strong>Pick a target every single pitch.</strong> Never just "throw it." Aim at a specific spot — a catcher's glove, a corner of a net, a taped square.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">3</div><div class="s-txt"><strong>Divide the zone into 4 corners.</strong> Practice hitting low-inside, low-outside, high-inside, high-outside. Throw 5 to each spot.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">4</div><div class="s-txt"><strong>Release point controls location.</strong> Out front = down in the zone. Early = high. Learn how your release changes where it goes.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">5</div><div class="s-txt"><strong>Track your hits.</strong> Out of 20 pitches to a corner, how many hit the spot? Write it down. Watch the number climb over weeks.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">🎯 Aim small, miss small</div>
+          <div class="tip">📊 Track your accuracy %</div>
+          <div class="tip">🔁 Same motion = repeatable spots</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grip-callout">
+      <h5>🎯 The Bullseye Drill</h5>
+      <p>Hang an old bedsheet or pitching net and tape a target — or use a strike-zone net with corners. Throw 5 fastballs to each corner. The goal isn't speed here, it's repeating your spot. Do this 2–3 times a week and your control will jump fast.</p>
+    </div>
+
+    <div class="motive flame">
+      <div class="big">THROW STRIKES. EVERYTHING ELSE FOLLOWS. 🎯</div>
+      <p>At 12, the pitcher who throws strikes plays. Speed and movement are great, but a pitcher who can locate a fastball on both corners is already ahead of most. Master this before you chase the fancy stuff.</p>
+    </div>
+  </div>
+
+  <!-- ===== CHANGE-UP ===== -->
+  <div id="changeup" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-sky">Pitch #2 · Your Best Weapon</span>
+      <h2>THE CHANGE-UP 🪂</h2>
+      <p>If the fastball is your foundation, the change-up is your first real weapon. It's the most important second pitch in softball — and learning it now puts you years ahead.</p>
+    </div>
+
+    <div class="card-img" style="margin:0 0 20px; height:200px;">
+      <img src="https://amandascarborough.com/changeup-grip.jpg" alt="Softball change up grip"
+        onerror="this.parentElement.innerHTML='<div class=\'img-ph\'><span class=\'ie\'>🪂</span>Change-up grip — slows the ball, same motion</div>'"/>
+    </div>
+
+    <div class="intro-block">
+      <h3>Why The Change-Up Wins Games</h3>
+      <p>Hitters time their swing to your fastball. The change-up looks <strong>exactly like your fastball</strong> — same windmill, same arm speed, same everything — but the ball comes out slower. The hitter swings way too early and misses, or makes weak contact. <strong>Deception is the entire point.</strong></p>
+      <p>The secret that makes a change-up work: <strong>your arm must move at full fastball speed.</strong> The grip does the work of slowing the ball, not your arm. If you slow your arm down, the hitter sees it coming and it's useless. This is the hardest part to learn, which is why you start now.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-sky">🤚</div>
+        <div class="c-title">
+          <h3>BEGINNER GRIP: THE FLIP / BACKHAND CHANGE</h3>
+          <span class="c-badge b-key">⭐ Easiest To Learn</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>There are several change-up grips, but the flip change (also called backhand change) is the easiest for beginners to control. Start here, then explore the circle change later as you advance.</p>
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-sky">1</div><div class="s-txt">Turn your hand so the <strong>back of your hand faces the catcher</strong> at release (palm faces you).</div></li>
+          <li class="step-item"><div class="s-num n-sky">2</div><div class="s-txt"><strong>Grip the ball deeper in your hand</strong> — back toward your palm instead of your fingertips. This kills speed naturally.</div></li>
+          <li class="step-item"><div class="s-num n-sky">3</div><div class="s-txt">At release, you <strong>"flip" the ball out</strong> the back of your hand instead of snapping it forward. No aggressive wrist snap.</div></li>
+          <li class="step-item"><div class="s-num n-sky">4</div><div class="s-txt"><strong>Keep your arm speed full.</strong> Same circle, same drive, same everything. Only the grip and release change.</div></li>
+          <li class="step-item"><div class="s-num n-sky">5</div><div class="s-txt">The ball comes out <strong>8–12 mph slower</strong> than your fastball. That speed difference is what fools the hitter.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-aqua">📈</div>
+        <div class="c-title">
+          <h3>THE PROGRESSION — BUILD IT STEP BY STEP</h3>
+          <span class="c-badge b-solo">🙋 Mostly Solo</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>You don't learn a change-up by walking out and throwing it full distance. You build it in stages. Master each stage before moving to the next. This is how you develop a change-up you can actually trust in a game.</p>
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-aqua">1</div><div class="s-txt"><strong>Stage 1 — Grip & flip (no pitching).</strong> Just hold the grip and flip the ball into a net or to a partner from 10 feet. Get the release feel. Do this for days.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">2</div><div class="s-txt"><strong>Stage 2 — Short distance.</strong> Add the full windmill motion but stand at half distance (about 20 ft). Focus on full arm speed with the slow grip.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">3</div><div class="s-txt"><strong>Stage 3 — Full distance.</strong> Move back to the full pitching distance. Throw it for strikes. It'll feel weird at first — that's normal.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">4</div><div class="s-txt"><strong>Stage 4 — Mix it in.</strong> In your bullpens, throw fastball, fastball, change-up. Practice making them look identical out of your hand.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">5</div><div class="s-txt"><strong>Stage 5 — Locate it.</strong> A change-up works best low in the zone. Practice keeping it down. A high change-up gets hit hard.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">⏳ Be patient — this takes weeks</div>
+          <div class="tip">🎭 Same arm speed always</div>
+          <div class="tip">⬇️ Keep it low in the zone</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-rose">🧠</div>
+        <div class="c-title">
+          <h3>WHEN TO THROW IT</h3>
+          <span class="c-badge b-key">⭐ Pitch Strategy</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>A change-up is only as good as your timing in throwing it. Throw it at the wrong time and you give away a free hit. Throw it at the right time and you get easy outs.</p>
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-rose">1</div><div class="s-txt"><strong>When the hitter is timing your fastball.</strong> If she's fouling off or catching up to your heat, slow her down with a change.</div></li>
+          <li class="step-item"><div class="s-num n-rose">2</div><div class="s-txt"><strong>Ahead in the count (0-2, 1-2).</strong> You have a strike to spare. A change-up here gets ugly swings and strikeouts.</div></li>
+          <li class="step-item"><div class="s-num n-rose">3</div><div class="s-txt"><strong>After back-to-back fastballs.</strong> Set it up. Two hard ones, then pull the string. The contrast is what makes it deadly.</div></li>
+          <li class="step-item"><div class="s-num n-rose">4</div><div class="s-txt"><strong>Against aggressive, free-swinging hitters.</strong> Girls who swing hard at everything are the easiest to fool with a change.</div></li>
+          <li class="step-item"><div class="s-num n-rose">5</div><div class="s-txt"><strong>NOT when you're behind 2-0 or 3-1</strong> unless you fully trust it for a strike. Don't risk a walk on a pitch you're still learning.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="motive">
+      <div class="big">FASTBALL SETS IT UP. CHANGE-UP FINISHES IT. 🪂</div>
+      <p>The fastball-change combo is the foundation of pitching at every level, from 12U all the way to college. Master these two pitches and you can get hitters out for years before you ever need a single movement pitch.</p>
+    </div>
+  </div>
+
+  <!-- ===== MOVEMENT ===== -->
+  <div id="movement" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-ink">Down The Road · Future Pitches</span>
+      <h2>MOVEMENT PITCHES 🌀</h2>
+      <p>These are advanced pitches you'll grow into AFTER you own the fastball and change-up. We're introducing them now so you understand them — but don't rush here. Spin first, full pitches later.</p>
+    </div>
+
+    <div class="safety" style="background:#fff8ee; border-color:var(--amber);">
+      <h4 style="color:#8a5a00;">📌 Read Before You Try These</h4>
+      <ul style="list-style:none;">
+        <li style="padding-left:22px;">⏳ Movement pitches require a solid fastball foundation first — give it a full season.</li>
+        <li style="padding-left:22px;">🌀 Start by learning SPIN, not full pitches. Spin drills are safe and build the feel.</li>
+        <li style="padding-left:22px;">🩺 The rise ball especially can stress a young arm if rushed. Build slowly with a coach.</li>
+      </ul>
+    </div>
+
+    <div class="card-img" style="margin:0 0 20px; height:200px;">
+      <img src="https://fastpitchpower.com/pitch-spin-rotation.jpg" alt="Softball pitch spin and rotation"
+        onerror="this.parentElement.innerHTML='<div class=\'img-ph\'><span class=\'ie\'>🌀</span>Spin direction determines movement</div>'"/>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-aqua">⬇️</div>
+        <div class="c-title">
+          <h3>THE DROP BALL</h3>
+          <span class="c-badge b-future">🔮 Learn First (of the two)</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>The drop ball is usually the first movement pitch to learn because it's the most natural and the safest on your arm. The ball drops sharply as it reaches the plate, producing ground balls and swings over the top.</p>
+        </div>
+        <div class="steps-lbl">HOW IT WORKS</div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-aqua">1</div><div class="s-txt"><strong>Topspin makes it drop.</strong> The ball spins forward (top rolls toward the plate). That forward spin pulls it down fast.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">2</div><div class="s-txt"><strong>The "peel" drop (beginner version):</strong> Release slightly out front and "peel" your fingers up the back of the ball, like rolling up the back of it.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">3</div><div class="s-txt"><strong>Get on top and out front.</strong> A longer stride and a release point further in front help create the downward angle.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">4</div><div class="s-txt"><strong>Stay tall, finish down.</strong> Many coaches teach finishing the hand low as the ball rolls off the fingertips with topspin.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">5</div><div class="s-txt"><strong>Great for ground balls.</strong> Thrown low, it produces weak grounders and swing-and-miss over the top. A workhorse pitch.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-rose">⬆️</div>
+        <div class="c-title">
+          <h3>THE RISE BALL</h3>
+          <span class="c-badge b-future">🔮 Advanced — Be Patient</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>The rise ball is considered the hardest pitch in fastpitch softball. It appears to "rise" or stay up as it crosses the plate, producing pop-ups and swing-and-miss under the ball. This is a long-term project, not a this-month skill.</p>
+        </div>
+        <div class="steps-lbl">HOW IT WORKS</div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-rose">1</div><div class="s-txt"><strong>Backspin makes it rise.</strong> The ball spins backward (bottom rolls toward the plate). True backspin fights gravity and keeps the ball up.</div></li>
+          <li class="step-item"><div class="s-num n-rose">2</div><div class="s-txt"><strong>You get UNDER the ball at release.</strong> Your hand works under and behind it, snapping upward to create that backspin.</div></li>
+          <li class="step-item"><div class="s-num n-rose">3</div><div class="s-txt"><strong>It requires real arm speed.</strong> Without good velocity, a rise ball just hangs and gets crushed. That's why fastball speed comes first.</div></li>
+          <li class="step-item"><div class="s-num n-rose">4</div><div class="s-txt"><strong>Thrown UP in the zone (or above it).</strong> The goal is to start it at the top of the zone so the hitter chases it up and out.</div></li>
+          <li class="step-item"><div class="s-num n-rose">5</div><div class="s-txt"><strong>Learn it with a coach.</strong> The mechanics are tricky and easy to do wrong. This is the one pitch to learn with in-person instruction.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">⏳ Truly a 1–3 year skill</div>
+          <div class="tip">🌀 Master spin before the full pitch</div>
+          <div class="tip">🩺 Build slowly to protect your arm</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grip-callout">
+      <h5>🌀 The Spin Drill — Start Here for Any Movement Pitch</h5>
+      <p>Before throwing a single drop or rise, learn to create spin. Toss the ball straight up a few feet above your head and practice creating clean topspin (for drop) or backspin (for rise). Watch the rotation. This is a safe, solo drill that builds the exact feel you'll need later. Do it daily and you'll learn movement faster when it's time.</p>
+    </div>
+
+    <div class="motive ink">
+      <div class="big">EARN THE FANCY PITCHES 🌀</div>
+      <p>Movement pitches are exciting, but they're the reward for mastering the basics. A 12-year-old who throws a locatable fastball and a deceptive change-up will get more outs than one who throws four mediocre pitches. Build your foundation first. The movement will come.</p>
+    </div>
+  </div>
+
+  <!-- ===== DRILLS ===== -->
+  <div id="drills" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-flame">Daily Reps · Build The Skill</span>
+      <h2>PITCHING DRILLS 💪</h2>
+      <p>This is where the work happens. Drills marked <span style="background:#d5f3f0; color:#0a5c54; font-weight:800; padding:1px 7px; border-radius:5px; font-size:12px;">🙋 Solo</span> you can do completely alone. Drills marked <span style="background:#ffe6e0; color:#c43a1a; font-weight:800; padding:1px 7px; border-radius:5px; font-size:12px;">🥅 Net/Catcher</span> need a net or someone catching.</p>
+    </div>
+
+    <!-- WRIST SNAP -->
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-aqua">✋</div>
+        <div class="c-title">
+          <h3>WRIST SNAP DRILL</h3>
+          <span class="c-badge b-solo">🙋 Solo · Daily</span>
+        </div>
+      </div>
+      <div class="card-img">
+        <img src="https://softballspot.com/wrist-snap-drill.jpg" alt="Softball wrist snap drill"
+          onerror="this.parentElement.innerHTML='<div class=\'img-ph\'><span class=\'ie\'>✋</span>Wrist snap — the foundation of spin and speed</div>'"/>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>The wrist snap is the single most important fundamental for a young pitcher. It creates both speed AND spin. This is the #1 drill you should do every day, and you can do it anywhere — even into a net in your bedroom.</p>
+        </div>
+        <div class="sets">🎯 Do: <span>3 sets × 20 snaps, daily</span></div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-aqua">1</div><div class="s-txt">Stand a few feet from a net or wall. Hold the ball in your <strong>4-seam grip</strong>.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">2</div><div class="s-txt"><strong>Tuck your throwing elbow into your hip</strong>, forearm pointing forward. No arm circle — just the wrist.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">3</div><div class="s-txt"><strong>Snap your wrist</strong> and release the ball into the net. The ball should come out with tight backspin and pop.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">4</div><div class="s-txt"><strong>Watch the spin.</strong> Clean, tight backspin = good snap. Wobbly spin = keep working. Aim for the laces to spin in a clean line.</div></li>
+          <li class="step-item"><div class="s-num n-aqua">5</div><div class="s-txt">Progress to snapping <strong>without the net</strong>, catching it yourself, feeling the snap each time.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">🛏️ Can do this in your room into a net</div>
+          <div class="tip">🌀 Watch for tight, clean spin</div>
+          <div class="tip">📅 Every single day</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARM CIRCLE -->
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-teal">🌀</div>
+        <div class="c-title">
+          <h3>ARM CIRCLE DRILL (NO BALL)</h3>
+          <span class="c-badge b-solo">🙋 Solo · Daily</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>Before you can pitch fast, your arm circle has to be smooth, loose, and repeatable. Doing it with no ball lets you focus purely on the path and staying relaxed. Pure muscle memory work.</p>
+        </div>
+        <div class="sets">🎯 Do: <span>3 sets × 15 circles each arm</span></div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-teal">1</div><div class="s-txt">Stand in your pitching stance. <strong>No ball, empty hand.</strong></div></li>
+          <li class="step-item"><div class="s-num n-teal">2</div><div class="s-txt">Make <strong>slow, full arm circles</strong>, keeping your arm close to your ear at the top and relaxed throughout.</div></li>
+          <li class="step-item"><div class="s-num n-teal">3</div><div class="s-txt"><strong>Brush your hip</strong> on the way past at the bottom. Feel where the release point is.</div></li>
+          <li class="step-item"><div class="s-num n-teal">4</div><div class="s-txt">Gradually <strong>speed up the circle</strong> while staying loose. Loose = fast. Tense = slow.</div></li>
+          <li class="step-item"><div class="s-num n-teal">5</div><div class="s-txt">Add your <strong>glove-side pull</strong> — snap the glove arm into your body as the throwing arm comes down.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">🪞 Do it in front of a mirror</div>
+          <div class="tip">😌 Stay loose the whole circle</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONE KNEE -->
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-amber">🧎</div>
+        <div class="c-title">
+          <h3>ONE-KNEE DRILL</h3>
+          <span class="c-badge b-partner">🥅 Net/Catcher</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>Taking your legs out of the equation forces you to focus on your arm circle, release point, and wrist snap. It isolates the upper-body mechanics so you can clean them up without thinking about your stride.</p>
+        </div>
+        <div class="sets">🎯 Do: <span>2 sets × 15 pitches</span></div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-amber">1</div><div class="s-txt"><strong>Kneel on your throwing-side knee</strong>, glove-side knee up, facing your target/net.</div></li>
+          <li class="step-item"><div class="s-num n-amber">2</div><div class="s-txt">Do a <strong>full arm circle and release</strong> into the net, focusing on snap and release point.</div></li>
+          <li class="step-item"><div class="s-num n-amber">3</div><div class="s-txt">Because you can't use your legs, <strong>all the power comes from your circle and snap.</strong> Great feedback.</div></li>
+          <li class="step-item"><div class="s-num n-amber">4</div><div class="s-txt">Focus on <strong>releasing out in front</strong> and brushing your hip. Clean reps over hard reps.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- STRIDE DRILL -->
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-flame">👟</div>
+        <div class="c-title">
+          <h3>STRIDE & FREEZE DRILL</h3>
+          <span class="c-badge b-solo">🙋 Solo · Daily</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>Your stride and leg drive are where your power comes from. This drill builds a longer, more explosive, more balanced stride — and you can do it with no ball and no net, anywhere.</p>
+        </div>
+        <div class="sets">🎯 Do: <span>3 sets × 10 strides</span></div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-flame">1</div><div class="s-txt">Set up on your rubber (or a line). <strong>Explode forward</strong> into your stride.</div></li>
+          <li class="step-item"><div class="s-num n-flame">2</div><div class="s-txt"><strong>Freeze when you land.</strong> Check your position: stride foot slightly open, good balance, weight transferring forward.</div></li>
+          <li class="step-item"><div class="s-num n-flame">3</div><div class="s-txt"><strong>Measure your stride length.</strong> Try to add a little distance over time — a longer stride builds more power.</div></li>
+          <li class="step-item"><div class="s-num n-flame">4</div><div class="s-txt">Hold the freeze for <strong>2 seconds</strong> each rep to build balance and control in your landing.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">📏 Track your stride distance</div>
+          <div class="tip">⚖️ Stick the landing balanced</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPIN DRILL -->
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-sky">🌀</div>
+        <div class="c-title">
+          <h3>SPIN DRILL</h3>
+          <span class="c-badge b-solo">🙋 Solo · Daily</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>Learning to control the spin you put on the ball is the foundation for every movement pitch you'll ever throw. It's also a great wrist-snap builder. Totally solo, totally safe, do it anywhere.</p>
+        </div>
+        <div class="sets">🎯 Do: <span>3 sets × 15 tosses</span></div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-sky">1</div><div class="s-txt"><strong>Toss the ball straight up</strong> a few feet above your head using only your wrist snap.</div></li>
+          <li class="step-item"><div class="s-num n-sky">2</div><div class="s-txt">For <strong>backspin (rise feel):</strong> snap so the bottom of the ball rolls toward you. Laces spin in a clean line.</div></li>
+          <li class="step-item"><div class="s-num n-sky">3</div><div class="s-txt">For <strong>topspin (drop feel):</strong> snap so the top of the ball rolls forward. Watch the rotation direction.</div></li>
+          <li class="step-item"><div class="s-num n-sky">4</div><div class="s-txt"><strong>Catch it and check the spin.</strong> Clean, tight, consistent spin is the goal. This trains your hand for movement later.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">👀 Watch the rotation closely</div>
+          <div class="tip">🎯 Tight clean spin = the goal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FULL BULLPEN -->
+    <div class="card">
+      <div class="card-top">
+        <div class="c-icon ic-ink">🎯</div>
+        <div class="c-title">
+          <h3>FULL-DISTANCE BULLPEN</h3>
+          <span class="c-badge b-partner">🥅 Net/Catcher</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="why">
+          <div class="why-lbl">⚡ Why</div>
+          <p>This is where it all comes together — full pitching from the regulation distance. A bullpen is a focused, structured pitching session, not just throwing. Quality and intent matter more than how many you throw.</p>
+        </div>
+        <div class="sets">🎯 Do: <span>Structured session, 2–3x per week</span></div>
+        <ul class="step-list">
+          <li class="step-item"><div class="s-num n-ink">1</div><div class="s-txt"><strong>Always warm up and arm-care first.</strong> Never start a bullpen cold.</div></li>
+          <li class="step-item"><div class="s-num n-ink">2</div><div class="s-txt"><strong>Start with fastballs to spots.</strong> Hit each corner. Build a foundation before working anything else.</div></li>
+          <li class="step-item"><div class="s-num n-ink">3</div><div class="s-txt"><strong>Throw with a purpose every pitch.</strong> Pick a target, commit, then check if you hit it. No lazy reps.</div></li>
+          <li class="step-item"><div class="s-num n-ink">4</div><div class="s-txt"><strong>Work your change-up</strong> once your fastball feels good. Then movement spin if you're at that stage.</div></li>
+          <li class="step-item"><div class="s-num n-ink">5</div><div class="s-txt"><strong>Finish on a good pitch.</strong> End the session feeling confident, never frustrated. Stop while it's going well.</div></li>
+          <li class="step-item"><div class="s-num n-ink">6</div><div class="s-txt"><strong>Cool down and do recovery band work</strong> after. Protect the arm you just worked.</div></li>
+        </ul>
+        <div class="tips">
+          <div class="tip">🎯 Every pitch has a target</div>
+          <div class="tip">📋 Quality over quantity</div>
+          <div class="tip">😊 Finish on a strike</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STRATEGY ===== -->
+  <div id="strategy" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-rose">Pitching IQ + Mental Game</span>
+      <h2>STRATEGY & MINDSET 🧠</h2>
+      <p>Pitching is as much mental as physical. The best pitchers think their way through an at-bat and stay calm under pressure. Here's how to compete with your brain, not just your arm.</p>
+    </div>
+
+    <div class="info-cards">
+
+      <div class="info-card" style="border-left-color:var(--aqua);">
+        <div class="info-emoji">🎯</div>
+        <div>
+          <h4>PITCHING TO CONTACT vs CHASING STRIKEOUTS</h4>
+          <p>Young pitchers think they need to strike everyone out. The truth: you have 8 defenders behind you. Letting hitters put the ball in play and trusting your defense is smart, low-stress pitching.</p>
+          <ul class="info-list">
+            <li>Throwing strikes and getting weak contact beats walking people chasing K's</li>
+            <li>Fewer pitches per batter means you last longer in the game</li>
+            <li>Your defense WANTS the ball — let them work</li>
+            <li>Strikeouts come naturally when you're ahead in counts</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-left-color:var(--amber);">
+        <div class="info-emoji">🔢</div>
+        <div>
+          <h4>SIMPLE PITCH SEQUENCING</h4>
+          <p>You don't need to overthink it as a beginner. A few simple patterns will make you tough to hit. As you grow, you'll add layers, but start here.</p>
+          <ul class="info-list">
+            <li>Get ahead early — throw a strike on the first pitch</li>
+            <li>Change speeds — a fastball then a change-up disrupts timing</li>
+            <li>Work both sides — in, then out keeps hitters off balance</li>
+            <li>When ahead 0-2 or 1-2, expand off the plate or pull the string</li>
+            <li>Never throw the same pitch in the same spot 3 times in a row</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-left-color:var(--flame);">
+        <div class="info-emoji">😤</div>
+        <div>
+          <h4>THE MENTAL GAME — STAYING COMPOSED</h4>
+          <p>You will walk batters. You will give up hits. Every pitcher does, even the best in the world. What separates good pitchers is how fast they reset and refocus.</p>
+          <ul class="info-list">
+            <li>One pitch at a time — forget the last one the instant it's over</li>
+            <li>Develop a reset routine: deep breath, step off, refocus on the catcher's glove</li>
+            <li>Bad call from the ump? Let it go. You can't control it. Next pitch.</li>
+            <li>Body language matters — stand tall and confident even when struggling</li>
+            <li>Your defense and teammates feed off your energy. Stay steady for them.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-left-color:var(--sky);">
+        <div class="info-emoji">🔮</div>
+        <div>
+          <h4>VISUALIZE & PREPARE</h4>
+          <p>Top pitchers see success before it happens. Mental reps are real reps. Use this every time you pitch.</p>
+          <ul class="info-list">
+            <li>Before a game, picture yourself hitting your spots and competing calmly</li>
+            <li>Between pitches, see the pitch you want to throw before you throw it</li>
+            <li>Visualize handling pressure — bases loaded, full count, staying calm</li>
+            <li>Picture the result you want, then trust your mechanics to deliver it</li>
+            <li>Do 2–3 minutes of this the night before you pitch</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-left-color:var(--rose);">
+        <div class="info-emoji">🤝</div>
+        <div>
+          <h4>WORKING WITH YOUR CATCHER</h4>
+          <p>You have a built-in advantage here — you ARE a catcher. You understand the relationship from both sides. Use that.</p>
+          <ul class="info-list">
+            <li>Your catcher is your partner — trust her target and her calls</li>
+            <li>Because you catch, you know what's hard to handle — throw catchable strikes</li>
+            <li>Communicate between innings — what's working, what's not</li>
+            <li>A good pitcher-catcher pair runs the whole defense together</li>
+            <li>Knowing both positions will make you smarter than pitchers who only pitch</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="motive flame">
+      <div class="big">COMPOSURE IS A SUPERPOWER 😤</div>
+      <p>The pitcher who stays calm with the bases loaded is the one who gets out of the inning. You can't control hits, errors, or umpires. You CAN control your next pitch and your attitude. Master that and you'll out-compete more talented pitchers all the time.</p>
+    </div>
+  </div>
+
+  <!-- ===== PLANNER ===== -->
+  <div id="planner" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-teal">Your Roadmap · Week By Week</span>
+      <h2>WEEKLY PRACTICE PLAN 📅</h2>
+      <p>Here's exactly what to do, week by week, as a brand-new pitcher. Follow this for your first month and you'll build a clean foundation the right way. Don't rush ahead — trust the build.</p>
+    </div>
+
+    <!-- WEEK 1 -->
+    <div class="week-card">
+      <div class="week-head" style="background:linear-gradient(135deg,var(--teal),var(--aqua));">
+        <h3>Week 1</h3>
+        <div class="week-focus">FOCUS:<br>Motion & Wrist Snap</div>
+      </div>
+      <div class="week-body">
+        <div class="day-row"><div class="day-tag">Day 1</div><div class="day-content"><strong>Arm care</strong> + wrist snap drill (3×20) + arm circle drill no ball (3×15). Learn the feel. No full pitching yet.</div></div>
+        <div class="day-row"><div class="day-tag">Day 2</div><div class="day-content"><strong>Arm care</strong> + wrist snaps + spin drill (3×15). Watch your spin get cleaner.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Light band work only. Let your body absorb the new movement.</div></div>
+        <div class="day-row"><div class="day-tag">Day 3</div><div class="day-content"><strong>Arm care</strong> + stride & freeze drill (3×10) + arm circles. Start linking legs and arm slowly.</div></div>
+        <div class="day-row"><div class="day-tag">Day 4</div><div class="day-content"><strong>Arm care</strong> + one-knee drill into net (2×15) + wrist snaps. First real releases into a net.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Full recovery. Stretch and hydrate.</div></div>
+      </div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div class="week-card">
+      <div class="week-head" style="background:linear-gradient(135deg,var(--aqua),var(--sky));">
+        <h3>Week 2</h3>
+        <div class="week-focus">FOCUS:<br>Full Motion Together</div>
+      </div>
+      <div class="week-body">
+        <div class="day-row"><div class="day-tag">Day 1</div><div class="day-content"><strong>Arm care</strong> + put it together: half-speed full windmill pitches into a net (15–20). Focus on smooth, not hard.</div></div>
+        <div class="day-row"><div class="day-tag">Day 2</div><div class="day-content"><strong>Arm care</strong> + wrist snaps + one-knee drill + 15 easy full pitches. Keep building the motion.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Band work + light stretching.</div></div>
+        <div class="day-row"><div class="day-tag">Day 3</div><div class="day-content"><strong>Arm care</strong> + stride drill + 20 full pitches at 3/4 speed. Start aiming at a target.</div></div>
+        <div class="day-row"><div class="day-tag">Day 4</div><div class="day-content"><strong>Arm care</strong> + first mini-bullpen: 25 fastballs to a target, full motion. Track how many are strikes.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Recovery day. Visualize good mechanics.</div></div>
+      </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div class="week-card">
+      <div class="week-head" style="background:linear-gradient(135deg,var(--sky),var(--flame));">
+        <h3>Week 3</h3>
+        <div class="week-focus">FOCUS:<br>Strikes & Locations</div>
+      </div>
+      <div class="week-body">
+        <div class="day-row"><div class="day-tag">Day 1</div><div class="day-content"><strong>Arm care</strong> + bullpen: fastballs to all 4 corners (5 each). Add the bullseye drill. Track accuracy.</div></div>
+        <div class="day-row"><div class="day-tag">Day 2</div><div class="day-content"><strong>Arm care</strong> + wrist snaps + spin drill + 20 location-focused pitches. Quality reps.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Band work. Core work — planks, med ball if available.</div></div>
+        <div class="day-row"><div class="day-tag">Day 3</div><div class="day-content"><strong>Arm care</strong> + introduce the change-up: grip & flip drill (Stage 1) from short distance. Just the feel.</div></div>
+        <div class="day-row"><div class="day-tag">Day 4</div><div class="day-content"><strong>Arm care</strong> + bullpen: 25 fastballs to spots + 10 change-up flips. Building the second pitch.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Recovery. You've earned it.</div></div>
+      </div>
+    </div>
+
+    <!-- WEEK 4 -->
+    <div class="week-card">
+      <div class="week-head" style="background:linear-gradient(135deg,var(--flame),var(--amber));">
+        <h3>Week 4+</h3>
+        <div class="week-focus">FOCUS:<br>Build The Combo</div>
+      </div>
+      <div class="week-body">
+        <div class="day-row"><div class="day-tag">Day 1</div><div class="day-content"><strong>Arm care</strong> + full bullpen: fastball locations + change-up progression Stage 2 (short distance, full arm speed).</div></div>
+        <div class="day-row"><div class="day-tag">Day 2</div><div class="day-content"><strong>Arm care</strong> + velocity work: stride drill + leg drive focus + fast-arm full pitches. Plus daily wrist snaps.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Band work + strength: squats, planks, med ball throws.</div></div>
+        <div class="day-row"><div class="day-tag">Day 3</div><div class="day-content"><strong>Arm care</strong> + bullpen mixing fastball + change-up at full distance. Make them look the same out of your hand.</div></div>
+        <div class="day-row"><div class="day-tag">Day 4</div><div class="day-content"><strong>Arm care</strong> + spin drill for movement feel + full bullpen. Start thinking about pitch sequencing.</div></div>
+        <div class="day-row"><div class="day-tag rest">Rest</div><div class="day-content">Recovery. Reflect on how far you've come in a month.</div></div>
+      </div>
+    </div>
+
+    <div class="grip-callout">
+      <h5>📌 A Note On This Schedule</h5>
+      <p>This is a guide, not a rigid rule. Listen to your arm — if it's sore, take an extra rest day. Some weeks you'll repeat before moving on, and that's perfectly fine. Building a pitcher takes months and years, not weeks. The goal is steady, healthy, consistent progress. Quality reps beat rushed reps every time.</p>
+    </div>
+
+    <div class="motive ink">
+      <div class="big">A LITTLE EVERY DAY BEATS A LOT ONCE A WEEK 📅</div>
+      <p>Fifteen good minutes of wrist snaps and arm circles every day will make you a better pitcher than one long session a week. Pitching rewards consistency more than almost any skill in sports. Show up daily and the results will come.</p>
+    </div>
+  </div>
+
+  <!-- ===== VIDEO GUIDE ===== -->
+  <div id="video" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-rose">Watch & Learn · Reference Library</span>
+      <h2>VIDEO REFERENCE GUIDE 🎥</h2>
+      <p>Sometimes you need to SEE a pitch to understand it. Here's exactly what to search on YouTube to find quality instruction for each skill. Watch how the pros move, then take it to your practice.</p>
+    </div>
+
+    <div class="grip-callout" style="background:#e8f7f6; border-color:var(--aqua);">
+      <h5 style="color:var(--teal);">🎥 How To Use This Tab</h5>
+      <p>Type the search phrases below into YouTube. Look for videos from established fastpitch pitching coaches and instructors. Watch in slow motion when you can, and focus on the body positions you've been reading about in this guide. Seeing a real pitcher do it makes everything click.</p>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Foundation</div>
+      <h4>The Windmill Motion Basics</h4>
+      <p>See the full windmill pitch broken down from start to finish. Watch the stance, stride, arm circle, and release as one smooth motion.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"fastpitch softball windmill pitching mechanics for beginners"</span></span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Fundamental Skill</div>
+      <h4>Wrist Snap Technique</h4>
+      <p>The most important fundamental. Watch how the wrist snaps at release and the spin it creates. This is your daily drill — see it done right.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"softball pitching wrist snap drill"</span></span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Velocity</div>
+      <h4>Leg Drive & Stride for Speed</h4>
+      <p>Understand where real velocity comes from. Watch how the legs explode off the rubber and how the stride creates power.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"softball pitching leg drive and stride power"</span></span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Pitch #1</div>
+      <h4>Fastball Grip & Spin</h4>
+      <p>See the 4-seam grip up close and the backspin a good fastball creates. Match what you see to the grip section of this guide.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"fastpitch softball fastball grip and spin"</span></span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Pitch #2</div>
+      <h4>Change-Up for Beginners</h4>
+      <p>Watch how a change-up looks identical to a fastball but comes out slower. Pay attention to the arm speed staying full.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"softball change up grip beginner same arm speed"</span></span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Movement · Future</div>
+      <h4>Drop Ball Mechanics</h4>
+      <p>For when you're ready. See how topspin makes the ball drop and how the release differs from a fastball.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"softball drop ball pitch how to throw"</span></span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Movement · Advanced</div>
+      <h4>Rise Ball Mechanics</h4>
+      <p>The hardest pitch in the game. Watch how the hand gets under the ball to create backspin. A long-term goal to study.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"softball rise ball mechanics backspin"</span></span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-topic">Arm Health</div>
+      <h4>Pitcher Arm Care & Band Routine</h4>
+      <p>See the band exercises that keep your arm healthy. Copy this routine into your warm-up and recovery.</p>
+      <div class="vid-search"><span class="vs-icon">🔍</span><span class="vs-text">Search: <span>"softball pitcher arm care band workout routine"</span></span></div>
+    </div>
+
+    <div class="motive">
+      <div class="big">WATCH IT, THEN GO DO IT 🎥</div>
+      <p>Video is a tool, not a substitute for reps. Watch a skill, understand it, then get outside and put in the work. The girls who improve fastest combine smart study with consistent practice. Now you've got both.</p>
+    </div>
+  </div>
+
+  <!-- ===== CHECKLIST ===== -->
+  <div id="checklist" class="section">
+    <div class="sec-head">
+      <span class="sec-tag t-aqua">Daily Tracker · Tap To Check Off</span>
+      <h2>TODAY'S CHECKLIST ✅</h2>
+      <p>Tap each item as you finish it. Hit your daily work and you're building a real pitcher's foundation, one day at a time. Most of these you can do on your own.</p>
+    </div>
+
+    <div class="tracker">
+      <h3>🔥 ARM CARE (Every Session)</h3>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Body warm-up — legs, hips, core moving</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Band work — shoulder activation (before)</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Easy throwing build-up before full pitching</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Recovery band work + stretch (after)</div></div>
+    </div>
+
+    <div class="tracker">
+      <h3>🙋 SOLO WORK (No Catcher Needed)</h3>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Wrist snap drill — 3 sets × 20</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Arm circle drill (no ball) — 3 sets × 15</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Stride & freeze drill — 3 sets × 10</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Spin drill — 3 sets × 15</div></div>
+    </div>
+
+    <div class="tracker">
+      <h3>🥅 NET / CATCHER WORK</h3>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">One-knee drill into net — 2 sets × 15</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Fastballs to spots / bullseye drill</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Change-up progression (whatever stage I'm on)</div></div>
+    </div>
+
+    <div class="tracker">
+      <h3>🧠 MENTAL & STRATEGY</h3>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">2 min visualization — hitting my spots, staying calm</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Practiced my reset routine between pitches</div></div>
+    </div>
+
+    <div class="tracker">
+      <h3>💪 STRENGTH (2–3x Per Week)</h3>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Core work — planks, dead bugs</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-lbl">Legs — squats, lunges + med ball if available</div></div>
+    </div>
+
+    <div class="motive flame">
+      <div class="big">YOU'RE BUILDING SOMETHING REAL 🏗️</div>
+      <p>Every wrist snap, every arm circle, every spin you watch get tighter — it's all stacking up. You started with zero pitching experience and you're putting in the work to change that. That takes guts. Keep showing up. Future you is going to be so glad you did. Let's go. 🥎</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="app-footer">
+  <div class="ft-logo">🥎 Pitcher's Playbook</div>
+  <div class="ft-credit">Created by <strong>Coach Jason Oberender</strong> · 2025</div>
+  <div class="ft-tag">A complete beginner pitching guide for fastpitch softball</div>
+</div>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function toggleCL(el) {
+    el.querySelector('.cl-box').classList.toggle('done');
+    el.querySelector('.cl-lbl').classList.toggle('done');
+  }
+</script>
+</body>
+</html>
